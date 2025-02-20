@@ -98,7 +98,7 @@ const CoinFlip = () => {
             </Space>
             <Space>
                 <Typography>{LOCALIZATION[lang].balance} {balance}$</Typography>
-                <Button onClick={() => setBalance(3000)}>Reset</Button>
+                <Button onClick={() => setBalance(3000)}>{LOCALIZATION[lang].reset}</Button>
             </Space>
             <Form form={form} layout="vertical" className="controls" onFinish={flipCoin}>
                 <Form.Item
@@ -162,6 +162,7 @@ const LOCALIZATION = {
         head: "Орёл",
         tail: "Решка",
         balance: "Баланс:",
+        reset: "Восстановить",
         sideLabel: "Выберите сторону монеты",
         sideRuleMsg: "Пожалуйста, выберите сторону!",
         moneyLabel: "Введите ставку от 1 до 1000",
@@ -175,6 +176,7 @@ const LOCALIZATION = {
         head: "Head",
         tail: "Tail",
         balance: "Balance:",
+        reset: "Reset",
         sideLabel: "Choose coin side",
         sideRuleMsg: "Please, choose coin side!",
         moneyLabel: "Enter a bet from 1 to 1000",
