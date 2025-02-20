@@ -5,6 +5,7 @@ import './CoinFlip.css';
 const CoinFlip = () => {
     const [isFlipping, setIsFlipping] = useState(false);
     const [result, setResult] = useState(null);
+    const [resultMsg, setResultMsg] = useState();
     const [form] = Form.useForm();
 
     const flipCoin = () => {
@@ -16,17 +17,19 @@ const CoinFlip = () => {
 
         setIsFlipping(true);
         setResult(null);
+        setResultMsg(null)
 
         setTimeout(() => {
             const randomResult = Math.random() < 0.5 ? 'heads' : 'tails';
+            setResult(randomResult);
             setIsFlipping(false);
 
             if (selectedSide === randomResult) {
-                setResult(
+                setResultMsg(
                     `Вы угадали! Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш выигрыш: ${predictionNumber}`
                 );
             } else {
-                setResult(
+                setResultMsg(
                     `Вы не угадали. Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш проигрыш: -${predictionNumber}`
                 );
             }
@@ -69,9 +72,9 @@ const CoinFlip = () => {
                     </Button>
                 </Form.Item>
 
-                {result && !isFlipping && (
+                {resultMsg && !isFlipping && (
                     <p style={{ marginTop: 16 }}>
-                        {result}
+                        {resultMsg}
                     </p>
                 )}
             </Form>
