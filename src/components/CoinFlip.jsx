@@ -1,70 +1,85 @@
 import React, { useState } from 'react';
-import { Radio, InputNumber, Button } from 'antd';
+import { Form, Radio, InputNumber, Button } from 'antd';
 import './CoinFlip.css';
 
 const CoinFlip = () => {
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [result, setResult] = useState(null);
-  const [selectedSide, setSelectedSide] = useState(); // Выбранная сторона монеты
-  const [predictionNumber, setPredictionNumber] = useState(1); // Введенное число
+    const [isFlipping, setIsFlipping] = useState(false);
+    const [result, setResult] = useState(null);
+    const [form] = Form.useForm();
 
-  const flipCoin = () => {
-    if (isFlipping) return;
+    const flipCoin = () => {
+        if (isFlipping) return;
 
-    setIsFlipping(true);
-    setResult(null);
+        const values = form.getFieldsValue();
+        const selectedSide = values.side;
+        const predictionNumber = values.number;
 
-    setTimeout(() => {
-      const randomResult = Math.random() < 0.5 ? 'heads' : 'tails';
-      setResult(randomResult);
-      setIsFlipping(false);
+        setIsFlipping(true);
+        setResult(null);
 
-      if (selectedSide === randomResult) {
-        setResult(`Вы угадали! Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}`);
-      } else {
-        setResult(`Вы не угадали. Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}`);
-      }
-    }, 1000);
-  };
+        setTimeout(() => {
+            const randomResult = Math.random() < 0.5 ? 'heads' : 'tails';
+            setResult(randomResult);
+            setIsFlipping(false);
 
-  return (
-    <div className="coin-flip-container">
-      <div className={`coin ${isFlipping ? 'flipping' : ''} ${result}`}>
-        <div className="side heads">Орёл</div>
-        <div className="side tails">Решка</div>
-      </div>
+            if (selectedSide === randomResult) {
+                setResult(
+                    `Вы угадали! Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш выигрыш: ${predictionNumber}`
+                );
+            } else {
+                setResult(
+                    `Вы не угадали. Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш проигрыш: -${predictionNumber}`
+                );
+            }
+        }, 2500);
+    };
 
-      <div className="controls">
-        <Radio.Group
-          value={selectedSide}
-          onChange={(e) => setSelectedSide(e.target.value)}
-          style={{ marginBottom: 16 }}
-        >
-          <Radio value="heads">Орёл</Radio>
-          <Radio value="tails">Решка</Radio>
-        </Radio.Group>
+    return (
+        <div className="coin-flip-container">
+            <div className={`coin ${isFlipping ? 'flipping' : ''} ${result}`}>
+                <div className="side heads">Орёл</div>
+                <div className="side tails">Решка</div>
+            </div>
 
-        <InputNumber
-          min={1}
-          max={10}
-          defaultValue={1}
-          value={predictionNumber}
-          onChange={(value) => setPredictionNumber(value)}
-          style={{ marginBottom: 16 }}
-        />
+            <Form form={form} layout="vertical" className="controls" onFinish={flipCoin}>
+                <Form.Item
+                    name="side"
+                    label="Выберите сторону монеты"
+                    rules={[{ required: true, message: 'Пожалуйста, выберите сторону!' }]}
+                >
+                    <Radio.Group>
+                        <Radio value="heads">Орёл</Radio>
+                        <Radio value="tails">Решка</Radio>
+                    </Radio.Group>
+                </Form.Item>
 
-        <Button type="primary" onClick={flipCoin} disabled={isFlipping}>
-          {isFlipping ? 'Подбрасываем...' : 'Подбросить монетку'}
-        </Button>
-      </div>
+                <Form.Item
+                    name="number"
+                    label="Введите ставку от 1 до 1000"
+                    rules={[
+                        { required: true, message: 'Пожалуйста, введите число!' },
+                        { type: 'number', min: 1, max: 1000, message: 'Число должно быть от 1 до 1000!' },
+                    ]}
+                >
+                    <InputNumber />
+                </Form.Item>
 
-      {result && !isFlipping && (
-        <p style={{ marginTop: 16 }}>
-          {result}
-        </p>
-      )}
-    </div>
-  );
+                <Form.Item>
+                    <Button type="primary" disabled={isFlipping} htmlType="submit">
+                        {isFlipping ? 'Подбрасываем...' : 'Сыграть'}
+                    </Button>
+                </Form.Item>
+            </Form>
+
+            {result && !isFlipping && (
+                <p style={{ marginTop: 16 }}>
+                    {result}
+                </p>
+            )}
+        </div>
+    );
 };
+
+
 
 export default CoinFlip;

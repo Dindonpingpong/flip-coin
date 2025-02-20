@@ -1,3 +1,4 @@
+/* Основной контейнер */
 .coin-flip-container {
   display: flex;
   flex-direction: column;
@@ -5,8 +6,10 @@
   justify-content: center;
   height: 100vh;
   font-family: Arial, sans-serif;
+  background-color: white; /* Белый фон страницы */
 }
 
+/* Стили для монетки */
 .coin {
   width: 100px;
   height: 100px;
@@ -16,7 +19,7 @@
 }
 
 .coin.flipping {
-  animation: flip 1s ease-in-out;
+  animation: flip 3s ease-in-out;
 }
 
 @keyframes flip {
@@ -55,9 +58,19 @@
   transform: rotateY(180deg);
 }
 
+/* Стили для формы */
 .controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 300px;
   margin-top: 20px;
+  padding: 20px;
+  background-color: #f0f2f5; /* Светло-серый фон формы */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для формы */
+}
+
+/* Стили для текста результата */
+.result-text {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #333;
 }
