@@ -19,7 +19,6 @@ const CoinFlip = () => {
 
         setTimeout(() => {
             const randomResult = Math.random() < 0.5 ? 'heads' : 'tails';
-            setResult(randomResult);
             setIsFlipping(false);
 
             if (selectedSide === randomResult) {
@@ -31,7 +30,7 @@ const CoinFlip = () => {
                     `Вы не угадали. Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш проигрыш: -${predictionNumber}`
                 );
             }
-        }, 2500);
+        }, 2000);
     };
 
     return (
@@ -69,13 +68,13 @@ const CoinFlip = () => {
                         {isFlipping ? 'Подбрасываем...' : 'Сыграть'}
                     </Button>
                 </Form.Item>
-            </Form>
 
-            {result && !isFlipping && (
-                <p style={{ marginTop: 16 }}>
-                    {result}
-                </p>
-            )}
+                {result && !isFlipping && (
+                    <p style={{ marginTop: 16 }}>
+                        {result}
+                    </p>
+                )}
+            </Form>
         </div>
     );
 };
