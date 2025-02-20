@@ -26,7 +26,7 @@ const CoinFlip = () => {
 
             if (selectedSide === randomResult) {
                 setResultMsg(
-                    `Вы угадали! Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш выигрыш: ${predictionNumber}`
+                    `Вы угадали! Результат: ${randomResult === 'heads' ? 'Орёл' : 'Решка'}. Ваш выигрыш: ${predictionNumber * 2}`
                 );
             } else {
                 setResultMsg(
