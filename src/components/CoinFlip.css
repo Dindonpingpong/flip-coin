@@ -6,7 +6,8 @@
   justify-content: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: white; /* Белый фон страницы */
+  background-color: white;
+  gap: 15px;
 }
 
 /* Стили для монетки */
@@ -45,7 +46,6 @@
   border-radius: 50%;
   font-size: 20px;
   font-weight: bold;
-  color: white;
 }
 
 .heads {
@@ -63,14 +63,13 @@
 /* Стили для формы */
 .controls {
   width: 300px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 20px;
-  background-color: #f0f2f5; /* Светло-серый фон формы */
+  background-color: #f0f2f5; 
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для формы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
-/* Стили для текста результата */
 .result-text {
   margin-top: 16px;
   font-size: 18px;
