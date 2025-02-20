@@ -31,7 +31,7 @@ const CoinFlip = () => {
                 if (currency === 'eur') {
                     prize = (prize * 1.04).toFixed(2)
                 }
-                setBalance(balance + prize)
+                setBalance((balance + prize).toFixed(2))
                 LOCALIZATION['ru'].resultMsg = getResultMsg('ru', randomResult, true, prize)
                 LOCALIZATION['en'].resultMsg = getResultMsg('en', randomResult, true, prize)
             } else {
@@ -39,7 +39,7 @@ const CoinFlip = () => {
                 if (currency === 'eur') {
                     lose = (lose * 1.04).toFixed(2)
                 }
-                setBalance(balance - lose)
+                setBalance((balance - lose).toFixed(2))
                 LOCALIZATION['ru'].resultMsg = getResultMsg('ru', randomResult, false, lose)
                 LOCALIZATION['en'].resultMsg = getResultMsg('en', randomResult, false, lose)
             }
