@@ -27,9 +27,9 @@ const CoinFlip = () => {
             setIsFlipping(false);
 
             if (selectedSide === randomResult) {
-                let prize = predictionNumber * 2
+                let prize = predictionNumber
                 if (currency === 'eur') {
-                    prize = (prize * 1.04).toFixed(2)
+                    prize = (predictionNumber * 1.04).toFixed(2)
                 }
                 setBalance((balance + prize).toFixed(2))
                 LOCALIZATION['ru'].resultMsg = getResultMsg('ru', randomResult, true, prize)
