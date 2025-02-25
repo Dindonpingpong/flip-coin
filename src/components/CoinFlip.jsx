@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Form, Radio, InputNumber, Button, Space, Select, Typography } from 'antd';
 import './CoinFlip.css';
 
@@ -8,7 +8,8 @@ const CoinFlip = () => {
     const [result, setResult] = useState(null);
     const [form] = Form.useForm();
     const [lang, setLang] = useState("en");
-    const [balance, setBalance] = useState(3000);
+    const balanceRef = useRef(3000);
+    const [balance, setBalance] = useState(balanceRef.current);
     const [currency, setCurrency] = useState("usd");
 
     const flipCoin = () => {
@@ -25,21 +26,23 @@ const CoinFlip = () => {
             const randomResult = Math.random() < 0.5 ? 'heads' : 'tails';
             setResult(randomResult);
             setIsFlipping(false);
-
+            
             if (selectedSide === randomResult) {
                 let prize = predictionNumber
                 if (currency === 'eur') {
-                    prize = (predictionNumber * 1.04).toFixed(2)
+                    prize = predictionNumber * 1.04
                 }
-                setBalance((balance + prize).toFixed(2))
+                balanceRef.current = balanceRef.current + prize
+                setBalance(balanceRef.current)
                 LOCALIZATION['ru'].resultMsg = getResultMsg('ru', randomResult, true, prize)
                 LOCALIZATION['en'].resultMsg = getResultMsg('en', randomResult, true, prize)
             } else {
                 let lose = predictionNumber
                 if (currency === 'eur') {
-                    lose = (lose * 1.04).toFixed(2)
+                    lose = lose * 1.04
                 }
-                setBalance((balance - lose).toFixed(2))
+                balanceRef.current = balanceRef.current - lose
+                setBalance(balanceRef.current)
                 LOCALIZATION['ru'].resultMsg = getResultMsg('ru', randomResult, false, lose)
                 LOCALIZATION['en'].resultMsg = getResultMsg('en', randomResult, false, lose)
             }
@@ -53,8 +56,23 @@ const CoinFlip = () => {
     return (
         <div className="coin-flip-container">
             <div className={`coin ${isFlipping ? 'flipping' : ''} ${result}`}>
-                <div className="side heads">{LOCALIZATION[lang].head}</div>
-                <div className="side tails">{LOCALIZATION[lang].tail}</div>
+                {
+                    (result === null || isFlipping) && 
+                    <div className="side heads">{LOCALIZATION[lang].heads}</div>
+                }
+                {
+                    (result === null || isFlipping) && 
+                    <div className="side heads">{LOCALIZATION[lang].tails}</div>
+                }
+                {
+                    result === "heads" &&
+                    <div className="side heads">{LOCALIZATION[lang].heads}</div>
+
+                }
+                {
+                    result === "tails" &&
+                    <div className="side tails">{LOCALIZATION[lang].tails}</div>
+                }
             </div>
 
             <Space wrap>
@@ -107,8 +125,8 @@ const CoinFlip = () => {
                     rules={[{ required: true, message: LOCALIZATION[lang].sideRuleMsg }]}
                 >
                     <Radio.Group>
-                        <Radio value="heads">{LOCALIZATION[lang].head}</Radio>
-                        <Radio value="tails">{LOCALIZATION[lang].tail}</Radio>
+                        <Radio value="heads">{LOCALIZATION[lang].heads}</Radio>
+                        <Radio value="tails">{LOCALIZATION[lang].tails}</Radio>
                     </Radio.Group>
                 </Form.Item>
 
@@ -142,25 +160,25 @@ const CoinFlip = () => {
 const getResultMsg = (lang, res, isWin, amount) => {
     if (lang === 'ru') {
         if (isWin) {
-            return `Вы угадали! Результат: ${res === 'heads' ? 'Орёл' : 'Решка'}. Ваш выигрыш: ${amount}$`
+            return `Вы угадали! Результат: ${LOCALIZATION['ru'][res]}. Ваш выигрыш: ${amount}$`
         }
 
-        return `Вы не угадали. Результат: ${res === 'heads' ? 'Орёл' : 'Решка'}. Ваш проигрыш: -${amount}$`
+        return `Вы не угадали. Результат: ${LOCALIZATION['ru'][res]}. Ваш проигрыш: -${amount}$`
     }
 
     if (lang === 'en') {
         if (isWin) {
-            return `You guessed it! Result: ${res === 'heads' ? 'Head' : 'Tail'}. Your winnings: ${amount}$`
+            return `You guessed it! Result: ${LOCALIZATION['en'][res]}. Your winnings: ${amount}$`
         }
 
-        return `You didn't guess it. Result: ${res === 'heads' ? 'Head' : 'Tail'}. Your loss: -${amount}$`
+        return `You didn't guess it. Result: ${LOCALIZATION['en'][res]}. Your loss: -${amount}$`
     }
 }
 
 const LOCALIZATION = {
     "ru": {
-        head: "Орёл",
-        tail: "Решка",
+        heads: "Орёл",
+        tails: "Решка",
         balance: "Баланс:",
         reset: "Восстановить",
         sideLabel: "Выберите сторону монеты",
@@ -173,8 +191,8 @@ const LOCALIZATION = {
         resultMsg: "",
     },
     "en": {
-        head: "Head",
-        tail: "Tail",
+        heads: "Heads",
+        tails: "Tails",
         balance: "Balance:",
         reset: "Reset",
         sideLabel: "Choose coin side",
